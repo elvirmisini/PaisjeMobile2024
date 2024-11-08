@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:background="#7C6A6A"
     android:visibility="visible"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:visibility="visible">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,13 +27,12 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:textColor="#EFEFEF"
-            android:textColorLink="#F4EFEF"
-            android:textSize="40dp"
-            tools:text="MyApp" />
+            android:text="My App"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="35dp" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
