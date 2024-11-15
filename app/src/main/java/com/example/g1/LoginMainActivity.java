@@ -20,6 +20,7 @@ public class LoginMainActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    DB DB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,8 @@ public class LoginMainActivity extends AppCompatActivity {
         passwordEditText=findViewById(R.id.editTextTextPassword);
         loginButton=findViewById(R.id.button);
 
+        DB=new DB(this);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -39,7 +42,6 @@ public class LoginMainActivity extends AppCompatActivity {
 
         loginButton.setOnClickListener(view->validateFields());
     }
-
     private void validateFields(){
         String email=emailEditText.getText().toString();
         String password=passwordEditText.getText().toString();
@@ -51,7 +53,15 @@ public class LoginMainActivity extends AppCompatActivity {
         }else if (TextUtils.isEmpty(password)) {
             Toast.makeText(this,"Please enter your password!",Toast.LENGTH_SHORT).show();
         }else {
-            Toast.makeText(this,"Success!",Toast.LENGTH_SHORT).show();
+
+            Boolean checkEmail=DB.checkEmail(email);
+            if(checkEmail){
+
+            Toast.makeText(this,"Success!",Toast.LENGTH_SHORT).show();}
+            else{
+                Toast.makeText(this,"Wrong Credentials!",Toast.LENGTH_SHORT).show();
+
+            }
         }
     }
 }
