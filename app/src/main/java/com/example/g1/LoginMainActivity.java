@@ -54,8 +54,8 @@ public class LoginMainActivity extends AppCompatActivity {
             Toast.makeText(this,"Please enter your password!",Toast.LENGTH_SHORT).show();
         }else {
 
-            Boolean checkEmail=DB.checkEmail(email);
-            if(checkEmail){
+            Boolean validateUser=DB.validateUser(email,password);
+            if(validateUser){
 
             Toast.makeText(this,"Success!",Toast.LENGTH_SHORT).show();}
             else{

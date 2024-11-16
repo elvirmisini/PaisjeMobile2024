@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import org.mindrot.jbcrypt.BCrypt;
 public class DB extends SQLiteOpenHelper {
 
 public static final String DBNAME="login.db";
@@ -31,8 +32,10 @@ public static final String DBNAME="login.db";
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
 
+        String hashedPassword=BCrypt.hashpw(password,BCrypt.gensalt());
+
         contentValues.put("email", email);
-        contentValues.put("password",password);
+        contentValues.put("password",hashedPassword);
 
         long result=db.insert("users",null,contentValues);
         if(result==-1) return false;
@@ -46,5 +49,20 @@ public static final String DBNAME="login.db";
             return true;
         }else return false;
 
+    }
+
+    public Boolean validateUser(String email,String password){
+
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery("Select password from users where email=?",new String[]{email});
+
+        if(cursor.moveToFirst()){
+            String storedHashedPassword=cursor.getString(0);
+            cursor.close();
+
+            return BCrypt.checkpw(password,storedHashedPassword);
+        }
+        cursor.close();
+        return false;
     }
 }
