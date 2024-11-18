@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class SignUp extends AppCompatActivity {
 
     private EditText nameField, surnameField, emailField, phoneField, passwordField;
-
+    DB DB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,12 +29,24 @@ public class SignUp extends AppCompatActivity {
         phoneField = findViewById(R.id.editTextPhone);
         passwordField = findViewById(R.id.editTextTextPassword2);
         Button signUpButton = findViewById(R.id.button3);
-
+        DB=new DB(this);
         // Set onClick listener for the SignUp button
         signUpButton.setOnClickListener(v -> {
             if (validateFields()) {
+
+                String name = nameField.getText().toString().trim();
+                String email = emailField.getText().toString().trim();
+                String password = passwordField.getText().toString().trim();
+                String surname = passwordField.getText().toString().trim();
+                String phone = passwordField.getText().toString().trim();
                 // Proceed with signup logic
-                Toast.makeText(this, "Signup successful!", Toast.LENGTH_SHORT).show();
+                if (DB.checkAdminEmail(email)) {
+                    Toast.makeText(this, "Admin user already exists.", Toast.LENGTH_SHORT).show();
+                } else if (DB.insertAdminUser(email,password,name,surname,phone)) {
+                    Toast.makeText(this, "Admin signup successful!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Failed to register admin user.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

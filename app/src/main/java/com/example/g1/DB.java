@@ -20,11 +20,14 @@ public static final String DBNAME="login.db";
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("Create Table users(email TEXT PRIMARY KEY, password TEXT)");
+        db.execSQL("CREATE TABLE adminUser (email TEXT PRIMARY KEY, password TEXT, name TEXT,surname TEXT, phone TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("Drop table if exists users");
+        db.execSQL("DROP TABLE IF EXISTS adminUser");
+        onCreate(db);
     }
 
     public  Boolean insertData(String email, String password){
@@ -50,7 +53,6 @@ public static final String DBNAME="login.db";
         }else return false;
 
     }
-
     public Boolean validateUser(String email,String password){
 
         SQLiteDatabase db=this.getReadableDatabase();
@@ -64,5 +66,28 @@ public static final String DBNAME="login.db";
         }
         cursor.close();
         return false;
+    }
+    public Boolean insertAdminUser(String email, String password, String name,String surname, String phone) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        contentValues.put("email", email);
+        contentValues.put("password", hashedPassword);
+        contentValues.put("name", name);
+        contentValues.put("surname", surname);
+        contentValues.put("phone", phone);
+
+        long result = db.insert("adminUser", null, contentValues);
+        return result != -1;
+    }
+
+    // Check if admin user exists by email
+    public Boolean checkAdminEmail(String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM adminUser WHERE email=?", new String[]{email});
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
     }
 }
