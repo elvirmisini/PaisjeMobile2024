@@ -1,5 +1,6 @@
 package com.example.g1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -17,6 +18,9 @@ public class SignUp extends AppCompatActivity {
 
     private EditText nameField, surnameField, emailField, phoneField, passwordField;
     DB DB;
+
+    private Button loginButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,9 @@ public class SignUp extends AppCompatActivity {
         phoneField = findViewById(R.id.editTextPhone);
         passwordField = findViewById(R.id.editTextTextPassword2);
         Button signUpButton = findViewById(R.id.button3);
+        loginButton=findViewById(R.id.button4);
+
+
         DB=new DB(this);
         // Set onClick listener for the SignUp button
         signUpButton.setOnClickListener(v -> {
@@ -48,6 +55,11 @@ public class SignUp extends AppCompatActivity {
                     Toast.makeText(this, "Failed to register admin user.", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+
+        loginButton.setOnClickListener(view->{
+            Intent intent=new Intent(SignUp.this, LoginMainActivity.class);
+            startActivity(intent);
         });
 
         // Handle system window insets

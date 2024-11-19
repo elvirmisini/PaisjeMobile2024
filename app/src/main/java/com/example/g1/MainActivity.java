@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 startActivity(new Intent(MainActivity.this, SignUp.class));
+               // overridePendingTransition(R.xml.slide_bottom, R.xml.fade_out);
                 finish();
             }
         },4000);

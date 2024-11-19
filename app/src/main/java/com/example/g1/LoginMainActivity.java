@@ -1,5 +1,6 @@
 package com.example.g1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -20,6 +21,7 @@ public class LoginMainActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    private Button signUpButton;
     DB DB;
 
     @Override
@@ -31,6 +33,7 @@ public class LoginMainActivity extends AppCompatActivity {
         emailEditText=findViewById(R.id.editTextTextEmailAddress);
         passwordEditText=findViewById(R.id.editTextTextPassword);
         loginButton=findViewById(R.id.button);
+        signUpButton=findViewById(R.id.signup);
 
         DB=new DB(this);
 
@@ -41,6 +44,11 @@ public class LoginMainActivity extends AppCompatActivity {
         });
 
         loginButton.setOnClickListener(view->validateFields());
+
+        signUpButton.setOnClickListener(view->{
+            Intent intent=new Intent(LoginMainActivity.this, SignUp.class);
+            startActivity(intent);
+        });
     }
     private void validateFields(){
         String email=emailEditText.getText().toString();
