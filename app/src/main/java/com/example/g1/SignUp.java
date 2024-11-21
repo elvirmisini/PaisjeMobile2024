@@ -19,8 +19,6 @@ public class SignUp extends AppCompatActivity {
     private EditText nameField, surnameField, emailField, phoneField, passwordField;
     DB DB;
 
-    private Button loginButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +31,7 @@ public class SignUp extends AppCompatActivity {
         phoneField = findViewById(R.id.editTextPhone);
         passwordField = findViewById(R.id.editTextTextPassword2);
         Button signUpButton = findViewById(R.id.button3);
-        loginButton=findViewById(R.id.button4);
+
 
 
         DB=new DB(this);
@@ -57,10 +55,7 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
-        loginButton.setOnClickListener(view->{
-            Intent intent=new Intent(SignUp.this, LoginMainActivity.class);
-            startActivity(intent);
-        });
+
 
         // Handle system window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
