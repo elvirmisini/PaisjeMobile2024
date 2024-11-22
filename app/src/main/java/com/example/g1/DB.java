@@ -54,7 +54,6 @@ public static final String DBNAME="login.db";
 
     }
     public Boolean validateUser(String email,String password){
-
         SQLiteDatabase db=this.getReadableDatabase();
         Cursor cursor=db.rawQuery("Select password from users where email=?",new String[]{email});
 

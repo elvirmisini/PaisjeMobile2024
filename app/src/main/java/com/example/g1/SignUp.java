@@ -18,6 +18,7 @@ public class SignUp extends AppCompatActivity {
 
     private EditText nameField, surnameField, emailField, phoneField, passwordField;
     DB DB;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class SignUp extends AppCompatActivity {
         phoneField = findViewById(R.id.editTextPhone);
         passwordField = findViewById(R.id.editTextTextPassword2);
         Button signUpButton = findViewById(R.id.button3);
-
+        loginButton=findViewById(R.id.loginButton);
 
 
         DB=new DB(this);
@@ -54,7 +55,11 @@ public class SignUp extends AppCompatActivity {
                 }
             }
         });
-
+        loginButton.setOnClickListener(view->{
+            Intent intent=new Intent(SignUp.this, LoginMainActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.xml.slide_right, R.xml.slide_left);
+        });
 
 
         // Handle system window insets

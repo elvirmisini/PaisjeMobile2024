@@ -21,6 +21,7 @@ public class LoginMainActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    private  Button signUpButton;
 
     DB DB;
 
@@ -33,6 +34,7 @@ public class LoginMainActivity extends AppCompatActivity {
         emailEditText=findViewById(R.id.editTextTextEmailAddress);
         passwordEditText=findViewById(R.id.editTextTextPassword);
         loginButton=findViewById(R.id.button);
+        signUpButton=findViewById(R.id.signup);
 
 
         DB=new DB(this);
@@ -44,6 +46,12 @@ public class LoginMainActivity extends AppCompatActivity {
         });
 
         loginButton.setOnClickListener(view->validateFields());
+
+        signUpButton.setOnClickListener(view->{
+            Intent intent=new Intent(LoginMainActivity.this, SignUp.class);
+            startActivity(intent);
+            overridePendingTransition(R.xml.slide_right, R.xml.slide_left);
+        });
 
 
     }
@@ -62,7 +70,11 @@ public class LoginMainActivity extends AppCompatActivity {
             Boolean validateUser=DB.validateUser(email,password);
             if(validateUser){
 
-            Toast.makeText(this,"Success!",Toast.LENGTH_SHORT).show();}
+            Toast.makeText(this,"Success!",Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(LoginMainActivity.this, homepage.class);
+            startActivity(intent);
+
+            }
             else{
                 Toast.makeText(this,"Wrong Credentials!",Toast.LENGTH_SHORT).show();
 
