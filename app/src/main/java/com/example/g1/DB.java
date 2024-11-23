@@ -21,6 +21,7 @@ public static final String DBNAME="login.db";
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("Create Table users(email TEXT PRIMARY KEY, password TEXT)");
         db.execSQL("CREATE TABLE adminUser (email TEXT PRIMARY KEY, password TEXT, name TEXT,surname TEXT, phone TEXT)");
+        db.execSQL("CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, task_name TEXT)");
     }
 
     @Override
@@ -30,6 +31,20 @@ public static final String DBNAME="login.db";
         onCreate(db);
     }
 
+    public boolean insertTask(String task_name){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("task_name",task_name);
+
+        long result=db.insert("tasks",null,contentValues);
+        return result!= -1;
+
+    }
+
+    public Cursor getAllTasks(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        return db.rawQuery("Select * from tasks",null);
+    }
     public  Boolean insertData(String email, String password){
 
         SQLiteDatabase db=this.getWritableDatabase();

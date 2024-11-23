@@ -43,5 +43,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Add task" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/taskList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            tools:listitem="@layout/task_item"
+            app:layout_constraintTop_toBottomOf="@id/button4"
+            />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
