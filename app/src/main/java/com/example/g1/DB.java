@@ -40,6 +40,28 @@ public static final String DBNAME="login.db";
         return result!= -1;
 
     }
+    public boolean deleteTask() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            // Find the last task's ID (or unique identifier)
+            Cursor cursor = db.rawQuery("SELECT id FROM tasks ORDER BY id DESC LIMIT 1", null);
+            if (cursor.moveToFirst()) {
+                int id = cursor.getInt(0); // Get the ID of the last task
+                // Delete the task by its ID
+                db.delete("tasks", "id = ?", new String[]{String.valueOf(id)});
+                cursor.close();
+                return true;
+            } else {
+                cursor.close();
+                return false; // No task to delete
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.close();
+        }
+    }
 
     public Cursor getAllTasks(){
         SQLiteDatabase db=this.getReadableDatabase();
@@ -59,7 +81,6 @@ public static final String DBNAME="login.db";
         if(result==-1) return false;
         else return true;
     }
-
     public Boolean checkEmail(String email){
         SQLiteDatabase db=this.getWritableDatabase();
         Cursor cursor=db.rawQuery("Select * from users where email=?",new String[]{email});

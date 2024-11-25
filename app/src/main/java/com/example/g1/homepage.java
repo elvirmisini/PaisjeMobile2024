@@ -39,6 +39,7 @@ public class homepage extends AppCompatActivity {
         loadTasks();
 
         Button addButton=findViewById(R.id.button4);
+        Button deleteButton=findViewById(R.id.deleteTask);
         EditText taskInput=findViewById(R.id.editTextText3);
 
         addButton.setOnClickListener(view->{
@@ -59,6 +60,22 @@ public class homepage extends AppCompatActivity {
             }
 
         });
+
+        deleteButton.setOnClickListener(view -> {
+            if (!tasks.isEmpty()) {
+                boolean isDeleted = db.deleteTask(); // Use your updated deleteTask method
+                if (isDeleted) {
+                    tasks.remove(tasks.size() - 1); // Update the local list
+                    adapter.notifyItemRemoved(tasks.size());
+                    Toast.makeText(this, "Last task deleted!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Failed to delete task!", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "No tasks to delete!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
 
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

@@ -44,6 +44,14 @@
             android:layout_margin="10dp"
             android:text="Add task" />
 
+        <Button
+            android:id="@+id/deleteTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Delete" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/taskList"
             android:layout_width="match_parent"
@@ -51,6 +59,8 @@
             android:layout_marginTop="10dp"
             tools:listitem="@layout/task_item"
             app:layout_constraintTop_toBottomOf="@id/button4"
-            />
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
