@@ -9,13 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
     private ArrayList<String> tasks;
+
+    private onTaskClickListener listener;
+
 
     public TaskAdapter(ArrayList<String> tasks){
         this.tasks=tasks;
     }
+
+    public void setOnTaskClickListener(onTaskClickListener listener){
+        this.listener=listener;
+    }
+
 
     @NonNull
     @Override
@@ -27,6 +34,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @Override
     public void onBindViewHolder(@NonNull TaskAdapter.TaskViewHolder holder, int position) {
         holder.taskName.setText(tasks.get(position));
+        holder.itemView.setOnClickListener(view ->{
+            if(listener!=null){
+                listener.onTaskClick(position,tasks.get(position));
+            }
+        });
     }
 
     @Override
@@ -40,5 +52,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             super(itemView);
             taskName=itemView.findViewById(R.id.taskName);
         }
+    }
+
+    public interface onTaskClickListener{
+        void onTaskClick(int position,String taskName);
     }
 }

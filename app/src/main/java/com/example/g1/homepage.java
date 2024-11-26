@@ -36,6 +36,11 @@ public class homepage extends AppCompatActivity {
         taskList.setLayoutManager(new LinearLayoutManager(this));
         taskList.setAdapter(adapter);
 
+        adapter.setOnTaskClickListener((position,taskName)->{
+            EditText editText=findViewById(R.id.editTextText3);
+            editText.setText(taskName);
+        });
+
         loadTasks();
 
         Button addButton=findViewById(R.id.button4);
