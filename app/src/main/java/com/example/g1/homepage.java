@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class homepage extends AppCompatActivity {
 
@@ -79,6 +80,21 @@ public class homepage extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "No tasks to delete!", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        Button showCheckedButton = findViewById(R.id.showCheckedButton); // Add this button in `homepage.xml`
+
+        showCheckedButton.setOnClickListener(view -> {
+            HashMap<Integer, Boolean> checkedStates = adapter.getCheckedStates();
+            StringBuilder checkedTasks = new StringBuilder("Checked tasks:\n");
+
+            for (int i = 0; i < tasks.size(); i++) {
+                if (checkedStates.getOrDefault(i, false)) {
+                    checkedTasks.append(tasks.get(i)).append("\n");
+                }
+            }
+
+            Toast.makeText(this, checkedTasks.toString(), Toast.LENGTH_LONG).show();
         });
 
 
