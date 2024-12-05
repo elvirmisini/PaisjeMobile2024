@@ -40,6 +40,11 @@ public static final String DBNAME="login.db";
         return result!= -1;
 
     }
+    public boolean deleteTaskByName(String taskName){
+        SQLiteDatabase db=this.getWritableDatabase();
+        int rowsDeleted=db.delete("tasks","task_name=?",new String[]{taskName});
+        return rowsDeleted>0;
+    }
     public boolean deleteTask() {
         SQLiteDatabase db = this.getWritableDatabase();
         try {

@@ -19,11 +19,11 @@
         tools:layout_editor_absoluteX="1dp">
 
         <Button
-            android:id="@+id/showCheckedButton"
+            android:id="@+id/deleteCheckedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Show Checked Tasks" />
+            android:text="Delete Checked Tasks" />
 
         <TextView
             android:id="@+id/textView4"

@@ -1,5 +1,6 @@
 package com.example.g1;
 
+import android.app.AlertDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
@@ -8,9 +9,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -82,19 +80,46 @@ public class homepage extends AppCompatActivity {
             }
         });
 
-        Button showCheckedButton = findViewById(R.id.showCheckedButton); // Add this button in `homepage.xml`
+        Button deleteCheckedButton = findViewById(R.id.deleteCheckedButton); // Add this button in `homepage.xml`
 
-        showCheckedButton.setOnClickListener(view -> {
+        deleteCheckedButton.setOnClickListener(view -> {
             HashMap<Integer, Boolean> checkedStates = adapter.getCheckedStates();
-            StringBuilder checkedTasks = new StringBuilder("Checked tasks:\n");
+            ArrayList<Integer> indexesToRemove=new ArrayList<>();
+            ArrayList<String> tasksToRemoveByName=new ArrayList<>();
 
-            for (int i = 0; i < tasks.size(); i++) {
-                if (checkedStates.getOrDefault(i, false)) {
-                    checkedTasks.append(tasks.get(i)).append("\n");
+            for (int i=0;i<tasks.size();i++){
+                if (checkedStates.getOrDefault(i,false)){
+                    String taskName=tasks.get(i);
+                    boolean isDeleted=db.deleteTaskByName(taskName);
+
+                    if(isDeleted){
+                        indexesToRemove.add(i);
+                        tasksToRemoveByName.add(taskName);
+                    }
                 }
             }
 
-            Toast.makeText(this, checkedTasks.toString(), Toast.LENGTH_LONG).show();
+            for (int i=indexesToRemove.size()-1;i>=0;i--){
+                int index=indexesToRemove.get(i);
+                tasks.remove(index);
+                adapter.notifyItemRemoved(index);
+                checkedStates.remove(index);
+            }
+
+            if(!tasksToRemoveByName.isEmpty()){
+                StringBuilder message=new StringBuilder("You deleted these tasks:\n ");
+                for (String task:tasksToRemoveByName){
+                    message.append("- ").append(task).append("\n");
+                }
+                new AlertDialog.Builder(this)
+                        .setTitle("Tasks Deleted!")
+                        .setMessage(message.toString())
+                        .setPositiveButton("OK",null)
+                        .show();
+
+            }else{
+             Toast.makeText(this,"No tasks were deleted!",Toast.LENGTH_SHORT).show();
+            }
         });
 
 
