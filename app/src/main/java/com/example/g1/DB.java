@@ -40,11 +40,28 @@ public static final String DBNAME="login.db";
         return result!= -1;
 
     }
-    public boolean deleteTaskByName(String taskName){
-        SQLiteDatabase db=this.getWritableDatabase();
-        int rowsDeleted=db.delete("tasks","task_name=?",new String[]{taskName});
-        return rowsDeleted>0;
+    public boolean deleteTaskByName(String taskName) {
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        // Fetch the ID of one matching task
+        Cursor cursor = database.query("tasks", new String[]{"id"}, "task_name = ?", new String[]{taskName}, null, null, null, "1");
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex("id"));
+            cursor.close();
+
+            // Delete the task using its ID
+            int rowsDeleted = database.delete("tasks", "id = ?", new String[]{String.valueOf(id)});
+            return rowsDeleted > 0;
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        return false; // No matching task found
     }
+
     public boolean deleteTask() {
         SQLiteDatabase db = this.getWritableDatabase();
         try {

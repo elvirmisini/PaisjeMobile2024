@@ -84,42 +84,53 @@ public class homepage extends AppCompatActivity {
 
         deleteCheckedButton.setOnClickListener(view -> {
             HashMap<Integer, Boolean> checkedStates = adapter.getCheckedStates();
-            ArrayList<Integer> indexesToRemove=new ArrayList<>();
-            ArrayList<String> tasksToRemoveByName=new ArrayList<>();
 
-            for (int i=0;i<tasks.size();i++){
-                if (checkedStates.getOrDefault(i,false)){
-                    String taskName=tasks.get(i);
-                    boolean isDeleted=db.deleteTaskByName(taskName);
+            // Collect names of tasks to delete
+            ArrayList<Integer> indexesToRemove = new ArrayList<>();
+            ArrayList<String> tasksToRemoveByName = new ArrayList<>();
 
-                    if(isDeleted){
-                        indexesToRemove.add(i);
-                        tasksToRemoveByName.add(taskName);
-                    }
+            for (int i = 0; i < tasks.size(); i++) {
+                if (checkedStates.getOrDefault(i, false)) {
+                    indexesToRemove.add(i);
+                    tasksToRemoveByName.add(tasks.get(i));
                 }
             }
 
-            for (int i=indexesToRemove.size()-1;i>=0;i--){
-                int index=indexesToRemove.get(i);
-                tasks.remove(index);
-                adapter.notifyItemRemoved(index);
-                checkedStates.remove(index);
+            if (tasksToRemoveByName.isEmpty()) {
+                // If no tasks are checked, show a message
+                Toast.makeText(this, "No tasks selected for deletion!", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            if(!tasksToRemoveByName.isEmpty()){
-                StringBuilder message=new StringBuilder("You deleted these tasks:\n ");
-                for (String task:tasksToRemoveByName){
-                    message.append("- ").append(task).append("\n");
-                }
-                new AlertDialog.Builder(this)
-                        .setTitle("Tasks Deleted!")
-                        .setMessage(message.toString())
-                        .setPositiveButton("OK",null)
-                        .show();
-
-            }else{
-             Toast.makeText(this,"No tasks were deleted!",Toast.LENGTH_SHORT).show();
+            // Build confirmation message
+            StringBuilder message = new StringBuilder("Are you sure you want to delete these tasks?\n");
+            for (String task : tasksToRemoveByName) {
+                message.append("- ").append(task).append("\n");
             }
+
+            // Show confirmation dialog
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirm Deletion")
+                    .setMessage(message.toString())
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        // If user confirms, delete the tasks
+                        for (int i = indexesToRemove.size() - 1; i >= 0; i--) {
+                            int index = indexesToRemove.get(i);
+                            String taskName = tasksToRemoveByName.get(indexesToRemove.size() - 1 - i);
+
+                            boolean isDeleted = db.deleteTaskByName(taskName); // Delete task from DB
+                            if (isDeleted) {
+                                tasks.remove(index);
+                                adapter.notifyItemRemoved(index);
+                                checkedStates.remove(index); // Update the checked states
+                            }
+                        }
+
+                        // Notify the user of success
+                        Toast.makeText(this, "Selected tasks deleted!", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("No", null) // Dismiss the dialog if "No" is clicked
+                    .show();
         });
 
 
