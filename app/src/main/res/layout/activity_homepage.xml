@@ -58,6 +58,14 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:text="Delete" />
+        <TextView
+            android:id="@+id/taskCountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Tasks: 0"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/taskList"
